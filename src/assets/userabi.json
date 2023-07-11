@@ -32,6 +32,19 @@
 			{
 				"indexed": false,
 				"internalType": "bool",
+				"name": "_close",
+				"type": "bool"
+			}
+		],
+		"name": "Closestatus",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bool",
 				"name": "_open",
 				"type": "bool"
 			}

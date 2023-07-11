@@ -30,7 +30,7 @@ let isExAidogeLoading = ref(false)
 let isExBetdogeLoading = ref(false)
 
 let bettingAmount;
-let userAddr = '0x6F9b94157Ce54E6799dce2a456733674a0e993cB';
+let userAddr = '0x18e60642A7713c42Ba05Ff41FA81e1Dc8FCC6107';
 let userABI = userabi
 let aidogeAddr = '0xA15C67F81964adf4217FBbCEc45cF1e9554B956a';
 let aidogeABI = aidogeabi;
@@ -74,6 +74,19 @@ const getInfo = async () => {
     } else {
         isApprove.value = false
     }
+    // 为避免切换钱包导致事件重复注册先删除
+    if(userContract1){
+        userContract1.off('Openstatus');
+        userContract1.off('Closestatus');
+    }
+    //注册事件
+    userContract1.onc('Openstatus', (_state) => {
+            Openstatus.value = true
+    })
+    userContract1.onc('Closestatus', (_state) => {
+            Openstatus.value = false
+            getInfo()
+    })
 }
 
 
@@ -218,23 +231,10 @@ const Setprovider = async () => {
     signer = await provider.getSigner();
     myaddress = await window.ethereum.request({ method: 'eth_requestAccounts' });
     myaddress = myaddress[0]
-    console.log(userContract1)
-    if(userContract1){
-        userContract1.removeAllListeners();
-    }
     userContract1 = new ethers.Contract(userAddr, userABI, provider)
     userContract2 = new ethers.Contract(userAddr, userABI, signer)
     aidogeContract1 = new ethers.Contract(aidogeAddr, aidogeABI, provider)
     aidogeContract2 = new ethers.Contract(aidogeAddr, aidogeABI, signer)
-    userContract1.on('Openstatus', (_state) => {
-        console.log(_state)
-        if (_state) {
-            Openstatus.value = true
-        } else {
-            getInfo()
-            Openstatus.value = false
-        }
-    })
     getInfo()
 }
 
@@ -301,7 +301,7 @@ const handleCountdownEnded = () => {
             <div class="progress">
                 <div class="timeState">
                     <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" />
-                    <span class="waiting">{{ waiting }}</span>
+                    <!-- <span class="waiting">{{ waiting }}</span> -->
                 </div>
                 <el-progress :percentage="userlen" :format="format" stroke-width="12" />
             </div>
