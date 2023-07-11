@@ -37,12 +37,10 @@ let aidogeABI = aidogeabi;
 let provider, myaddress, userContract1, userContract2, aidogeContract, aidogeContract1, aidogeContract2, signer;
 
 
-
-
 const getInfo = async () => {
     //获取当前参与人数
     userlen.value = await userContract1.Userslen()
-    userlen.value = userlen.value
+    userlen.value = Number(userlen.value)
     // 获取开奖期数
     let _currentIssue = await userContract1.LotteryNumber()
     infomation.value.currentIssue = _currentIssue
@@ -312,7 +310,7 @@ const handleCountdownEnded = () => {
                     <!-- <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" /> -->
                     <!-- <span class="waiting">{{ waiting }}</span> -->
                 </div>
-                <el-progress :percentage="userlen" :format="format" stroke-width="12" />
+                <el-progress :percentage="userlen" :format="format" stroke-width=12 />
             </div>
 
             <div class="Info">
