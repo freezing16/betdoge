@@ -220,7 +220,7 @@ const Setprovider = async () => {
     myaddress = myaddress[0]
     console.log(userContract1)
     if(userContract1){
-        userContract1.removeAllListeners('Openstatus');
+        userContract1.removeAllListeners();
     }
     userContract1 = new ethers.Contract(userAddr, userABI, provider)
     userContract2 = new ethers.Contract(userAddr, userABI, signer)
