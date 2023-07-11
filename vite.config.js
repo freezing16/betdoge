@@ -35,10 +35,14 @@ export default defineConfig({
           landscape: false, // 是否处理横屏情况
         })
       ]
-    }},
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    host: '0.0.0.0'
   }
 })

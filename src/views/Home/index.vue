@@ -30,7 +30,7 @@ let isExAidogeLoading = ref(false)
 let isExBetdogeLoading = ref(false)
 
 let bettingAmount;
-let userAddr = '0x8DB0b3d18F51f2e5C1997E2D949854D7F42AB976';
+let userAddr = '0x6F9b94157Ce54E6799dce2a456733674a0e993cB';
 let userABI = userabi
 let aidogeAddr = '0xA15C67F81964adf4217FBbCEc45cF1e9554B956a';
 let aidogeABI = aidogeabi;
@@ -224,6 +224,7 @@ const Setprovider = async () => {
     aidogeContract2 = new ethers.Contract(aidogeAddr, aidogeABI, signer)
     userContract1.removeAllListeners();//清除所有监听器
     userContract1.on('Openstatus', (_state) => {
+       console.log(_state)
         if(_state){
             Openstatus.value=true
         }else{
@@ -251,8 +252,8 @@ onMounted(async () => {
 })
 //倒计时结束
 const handleCountdownEnded = () => {
-    console.log("end")
-    waiting.value = "waiting"
+    // console.log("end")
+    // waiting.value = "waiting"
 };
 </script>
 
