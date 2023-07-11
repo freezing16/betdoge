@@ -227,18 +227,17 @@ const Setprovider = async () => {
             console.log("event off")
         })
     }
-    //注册监听器
-    // userContract1.on('Openstatus', (_state) => {
-    //     if (_state) {
-    //         console.log('start')
-    //         Openstatus.value = true
-    //     }else{
-    //         console.log('close')
-    //         Openstatus.value = false
-    //         getInfo()
-    //     }
-
-    // })
+    // 注册监听器
+    userContract1.on('Openstatus', (_state) => {
+        if (_state) {
+            console.log('start')
+            Openstatus.value = true
+        }else{
+            console.log('close')
+            Openstatus.value = false
+            getInfo()
+        }
+    })
     
     getInfo()
 }
