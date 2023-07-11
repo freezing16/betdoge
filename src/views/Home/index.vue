@@ -218,19 +218,22 @@ const Setprovider = async () => {
     signer = await provider.getSigner();
     myaddress = await window.ethereum.request({ method: 'eth_requestAccounts' });
     myaddress = myaddress[0]
+    console.log(userContract1)
+    if(userContract1){
+        userContract1.removeAllListeners('Openstatus');
+    }
     userContract1 = new ethers.Contract(userAddr, userABI, provider)
     userContract2 = new ethers.Contract(userAddr, userABI, signer)
     aidogeContract1 = new ethers.Contract(aidogeAddr, aidogeABI, provider)
     aidogeContract2 = new ethers.Contract(aidogeAddr, aidogeABI, signer)
-    userContract1.removeAllListeners();//清除所有监听器
     userContract1.on('Openstatus', (_state) => {
-       console.log(_state)
-        if(_state){
-            Openstatus.value=true
-        }else{
+        console.log(_state)
+        if (_state) {
+            Openstatus.value = true
+        } else {
             getInfo()
-            Openstatus.value=false
-        } 
+            Openstatus.value = false
+        }
     })
     getInfo()
 }
@@ -272,7 +275,8 @@ const handleCountdownEnded = () => {
 
     </div>
 
-    <div class="lottery_box" v-loading="Openstatus" element-loading-text="Lottery in progress..." element-loading-background="rgba(167, 81, 255,.4)">
+    <div class="lottery_box" v-loading="Openstatus" element-loading-text="Lottery in progress..."
+        element-loading-background="rgba(167, 81, 255,.4)">
         <div class="LuckNumbers">
             <h1>Destroy AIDOGE</h1>
             <h2>By participating in the AIDOGE lottery, participants will receive minted BETDOGE tokens.
@@ -464,6 +468,7 @@ const handleCountdownEnded = () => {
         margin-top: 20px;
         display: flex;
         justify-content: space-between;
+
         button {
             width: 160px;
             height: 40px;
