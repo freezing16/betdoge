@@ -75,17 +75,19 @@ const getInfo = async () => {
         isApprove.value = false
     }
     // 为避免切换钱包导致事件重复注册先删除
-    if(userContract1){
+    if (userContract1) {
         userContract1.off('Openstatus');
         userContract1.off('Closestatus');
     }
     //注册事件
-    userContract1.onc('Openstatus', (_state) => {
-            Openstatus.value = true
+    userContract1.once('Openstatus', (_state) => {
+        console.log('start')
+        Openstatus.value = true
     })
-    userContract1.onc('Closestatus', (_state) => {
-            Openstatus.value = false
-            getInfo()
+    userContract1.once('Closestatus', (_state) => {
+        console.log('close')
+        Openstatus.value = false
+        getInfo()
     })
 }
 
