@@ -1,7 +1,7 @@
 <script setup>
-import countTime from '@/components/countTime.vue'
+// import countTime from '@/components/countTime.vue'
 import { ethers } from 'ethers';
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { utils } from '@/utils/utils.js'
 import userabi from '@/assets/userabi.json'
 import aidogeabi from '@/assets/aidogeabi.json'
@@ -30,7 +30,7 @@ let isExAidogeLoading = ref(false)
 let isExBetdogeLoading = ref(false)
 
 let bettingAmount;
-let userAddr = '0x18e60642A7713c42Ba05Ff41FA81e1Dc8FCC6107';
+let userAddr = '0xa6bebb31226730e6575Fe6e30266570AE225727c';
 let userABI = userabi
 let aidogeAddr = '0xA15C67F81964adf4217FBbCEc45cF1e9554B956a';
 let aidogeABI = aidogeabi;
@@ -74,21 +74,6 @@ const getInfo = async () => {
     } else {
         isApprove.value = false
     }
-    // 为避免切换钱包导致事件重复注册先删除
-    if (userContract1) {
-        userContract1.off('Openstatus');
-        userContract1.off('Closestatus');
-    }
-    //注册事件
-    userContract1.once('Openstatus', (_state) => {
-        console.log('start')
-        Openstatus.value = true
-    })
-    userContract1.once('Closestatus', (_state) => {
-        console.log('close')
-        Openstatus.value = false
-        getInfo()
-    })
 }
 
 
@@ -237,14 +222,32 @@ const Setprovider = async () => {
     userContract2 = new ethers.Contract(userAddr, userABI, signer)
     aidogeContract1 = new ethers.Contract(aidogeAddr, aidogeABI, provider)
     aidogeContract2 = new ethers.Contract(aidogeAddr, aidogeABI, signer)
+    let eventListenerCount = await userContract1.listenerCount('Openstatus');
+    console.log(eventListenerCount)
+    if(eventListenerCount){
+        userContract1.off("Openstatus",()=>{
+            console.log("event off")
+        })
+    }
+    //注册监听器
+    userContract1.on('Openstatus', (_state) => {
+        if (_state) {
+            console.log('start')
+            Openstatus.value = true
+        }else{
+            console.log('close')
+            Openstatus.value = false
+            getInfo()
+        }
+
+    })
+    
     getInfo()
 }
 
 //切换钱包
 window.ethereum.on('accountsChanged', async (accounrs) => {
-    let res = await window.ethereum.enable();
-    wallAddr.value = res[0].substring(0, 6) + '...' + res[0].substring(res[0].length - 4);
-    Setprovider()
+    location.reload();
 })
 
 //加载完成
@@ -253,8 +256,12 @@ onMounted(async () => {
         let res = await window.ethereum.request({ method: 'eth_requestAccounts' });
         wallAddr.value = res[0].substring(0, 6) + '...' + res[0].substring(res[0].length - 4);
         Setprovider()
+
     }
 })
+
+
+
 //倒计时结束
 const handleCountdownEnded = () => {
     // console.log("end")
@@ -302,7 +309,7 @@ const handleCountdownEnded = () => {
             </h2>
             <div class="progress">
                 <div class="timeState">
-                    <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" />
+                    <!-- <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" /> -->
                     <!-- <span class="waiting">{{ waiting }}</span> -->
                 </div>
                 <el-progress :percentage="userlen" :format="format" stroke-width="12" />
