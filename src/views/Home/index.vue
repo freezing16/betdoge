@@ -81,23 +81,21 @@ const approve = async () => {
     try {
         let eventListenerCount = await aidogeContract1.listenerCount('Approval');
         console.log(eventListenerCount)
-        if (eventListenerCount) {
-            userContract1.off("Approval", () => {
-                console.log("event off")
+        if (eventListenerCount == false) {
+            aidogeContract1.once('Approval', async (_user, _spender, _value) => {
+                if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)
+                    && utils.addressToUpperCase(_spender) == utils.addressToUpperCase(userAddr)) {
+                    getInfo()
+                    ElMessage({
+                        message: 'Transaction sent successfully.',
+                        type: 'success',
+                        duration: 3000
+                    })
+                    isApproveLoading.value = false
+                }
             })
         }
-        aidogeContract1.once('Approval', async (_user, _spender, _value) => {
-            if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)
-                && utils.addressToUpperCase(_spender) == utils.addressToUpperCase(userAddr)) {
-                getInfo()
-                ElMessage({
-                    message: 'Transaction sent successfully.',
-                    type: 'success',
-                    duration: 3000
-                })
-                isApproveLoading.value = false
-            }
-        })
+
         let res = await aidogeContract2.approve(userAddr, 100000000000000000000000n)
 
     } catch (error) {
@@ -117,23 +115,21 @@ const Betting = async () => {
 
         let eventListenerCount = await userContract1.listenerCount('betsuccess');
         console.log(eventListenerCount)
-        if (eventListenerCount) {
-            userContract1.off("betsuccess", () => {
-                console.log("event off")
+        if (eventListenerCount == false) {
+            userContract1.once('betsuccess', (_user) => {
+                if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
+                    getInfo()
+                    ElMessage({
+                        message: 'Transaction sent successfully.',
+                        type: 'success',
+                        duration: 3000
+                    })
+                    isbettingLoading.value = false
+                }
             })
         }
 
-        userContract1.once('betsuccess', (_user) => {
-            if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
-                getInfo()
-                ElMessage({
-                    message: 'Transaction sent successfully.',
-                    type: 'success',
-                    duration: 3000
-                })
-                isbettingLoading.value = false
-            }
-        })
+
 
         let res = await userContract2.Betting(bettingAmount)
 
@@ -155,24 +151,22 @@ const ExtractAIDOGE = async () => {
 
             let eventListenerCount = await userContract1.listenerCount('extractToken');
             console.log(eventListenerCount)
-            if (eventListenerCount) {
-                userContract1.off("extractToken", () => {
-                    console.log("event off")
+            if (eventListenerCount == false) {
+                userContract1.once('extractToken', (_user) => {
+                    if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
+                        getInfo()
+                        ElMessage({
+                            message: 'Transaction sent successfully.',
+                            type: 'success',
+                            duration: 3000
+                        })
+                        isExAidogeLoading.value = false
+
+                    }
                 })
             }
 
-            userContract1.once('extractToken', (_user) => {
-                if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
-                    getInfo()
-                    ElMessage({
-                        message: 'Transaction sent successfully.',
-                        type: 'success',
-                        duration: 3000
-                    })
-                    isExAidogeLoading.value = false
 
-                }
-            })
             let res = await userContract2.extractAidoge(amount)
 
 
@@ -199,26 +193,23 @@ const ExtractBETDOGE = async () => {
     if (amount > 0) {
         try {
 
-
             let eventListenerCount = await userContract1.listenerCount('extractToken');
             console.log(eventListenerCount)
-            if (eventListenerCount) {
-                userContract1.off("extractToken", () => {
-                    console.log("event off")
+            if (eventListenerCount == false) {
+                userContract1.once('extractToken', (_user) => {
+                    if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
+                        getInfo()
+                        ElMessage({
+                            message: 'Transaction sent successfully.',
+                            type: 'success',
+                            duration: 3000
+                        })
+                        isExBetdogeLoading.value = false
+                    }
                 })
             }
 
-            userContract1.once('extractToken', (_user) => {
-                if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
-                    getInfo()
-                    ElMessage({
-                        message: 'Transaction sent successfully.',
-                        type: 'success',
-                        duration: 3000
-                    })
-                    isExBetdogeLoading.value = false
-                }
-            })
+
 
             let res = await userContract2.extractBetdoge(amount)
 
