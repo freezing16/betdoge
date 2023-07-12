@@ -79,7 +79,13 @@ const getInfo = async () => {
 const approve = async () => {
     isApproveLoading.value = true
     try {
-        let res = await aidogeContract2.approve(userAddr, 100000000000000000000000n)
+        let eventListenerCount = await aidogeContract1.listenerCount('Approval');
+        console.log(eventListenerCount)
+        if (eventListenerCount) {
+            userContract1.off("Approval", () => {
+                console.log("event off")
+            })
+        }
         aidogeContract1.once('Approval', async (_user, _spender, _value) => {
             if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)
                 && utils.addressToUpperCase(_spender) == utils.addressToUpperCase(userAddr)) {
@@ -92,6 +98,8 @@ const approve = async () => {
                 isApproveLoading.value = false
             }
         })
+        let res = await aidogeContract2.approve(userAddr, 100000000000000000000000n)
+
     } catch (error) {
         console.error(error)
         ElMessage.error(error.toString())
@@ -106,7 +114,15 @@ const approve = async () => {
 const Betting = async () => {
     isbettingLoading.value = true
     try {
-        let res = await userContract2.Betting(bettingAmount)
+
+        let eventListenerCount = await userContract1.listenerCount('betsuccess');
+        console.log(eventListenerCount)
+        if (eventListenerCount) {
+            userContract1.off("betsuccess", () => {
+                console.log("event off")
+            })
+        }
+
         userContract1.once('betsuccess', (_user) => {
             if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                 getInfo()
@@ -118,6 +134,9 @@ const Betting = async () => {
                 isbettingLoading.value = false
             }
         })
+
+        let res = await userContract2.Betting(bettingAmount)
+
 
     } catch (error) {
         console.log(error)
@@ -133,7 +152,15 @@ const ExtractAIDOGE = async () => {
     console.log(amount);
     if (amount > 0) {
         try {
-            let res = await userContract2.extractAidoge(amount)
+
+            let eventListenerCount = await userContract1.listenerCount('extractToken');
+            console.log(eventListenerCount)
+            if (eventListenerCount) {
+                userContract1.off("extractToken", () => {
+                    console.log("event off")
+                })
+            }
+
             userContract1.once('extractToken', (_user) => {
                 if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                     getInfo()
@@ -146,6 +173,8 @@ const ExtractAIDOGE = async () => {
 
                 }
             })
+            let res = await userContract2.extractAidoge(amount)
+
 
         } catch (error) {
             ElMessage.error(error.toString())
@@ -169,7 +198,16 @@ const ExtractBETDOGE = async () => {
     console.log(amount)
     if (amount > 0) {
         try {
-            let res = await userContract2.extractBetdoge(amount)
+
+
+            let eventListenerCount = await userContract1.listenerCount('extractToken');
+            console.log(eventListenerCount)
+            if (eventListenerCount) {
+                userContract1.off("extractToken", () => {
+                    console.log("event off")
+                })
+            }
+
             userContract1.once('extractToken', (_user) => {
                 if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                     getInfo()
@@ -181,6 +219,9 @@ const ExtractBETDOGE = async () => {
                     isExBetdogeLoading.value = false
                 }
             })
+
+            let res = await userContract2.extractBetdoge(amount)
+
 
         } catch (error) {
             ElMessage.error(error.toString())
