@@ -81,7 +81,7 @@ const approve = async () => {
     try {
         let eventListenerCount = await aidogeContract1.listenerCount('Approval');
         console.log(eventListenerCount)
-        if (eventListenerCount == false) {
+        if (eventListenerCount == 0) {
             aidogeContract1.once('Approval', async (_user, _spender, _value) => {
                 if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)
                     && utils.addressToUpperCase(_spender) == utils.addressToUpperCase(userAddr)) {
@@ -115,7 +115,7 @@ const Betting = async () => {
 
         let eventListenerCount = await userContract1.listenerCount('betsuccess');
         console.log(eventListenerCount)
-        if (eventListenerCount == false) {
+        if (eventListenerCount == 0) {
             userContract1.once('betsuccess', (_user) => {
                 if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                     getInfo()
@@ -151,7 +151,7 @@ const ExtractAIDOGE = async () => {
 
             let eventListenerCount = await userContract1.listenerCount('extractToken');
             console.log(eventListenerCount)
-            if (eventListenerCount == false) {
+            if (eventListenerCount == 0) {
                 userContract1.once('extractToken', (_user) => {
                     if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                         getInfo()
@@ -195,7 +195,7 @@ const ExtractBETDOGE = async () => {
 
             let eventListenerCount = await userContract1.listenerCount('extractToken');
             console.log(eventListenerCount)
-            if (eventListenerCount == false) {
+            if (eventListenerCount == 0) {
                 userContract1.once('extractToken', (_user) => {
                     if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                         getInfo()
