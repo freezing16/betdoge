@@ -30,9 +30,9 @@ let isExAidogeLoading = ref(false)
 let isExBetdogeLoading = ref(false)
 
 let bettingAmount;
-let userAddr = '0xa6bebb31226730e6575Fe6e30266570AE225727c';
+let userAddr = '0xa73a55674284A0050C1510cBa3d28A6D4EE6e4a8';
 let userABI = userabi
-let aidogeAddr = '0xA15C67F81964adf4217FBbCEc45cF1e9554B956a';
+let aidogeAddr = '0x09E18590E8f76b6Cf471b3cd75fE1A1a9D2B2c2b';
 let aidogeABI = aidogeabi;
 let provider, myaddress, userContract1, userContract2, aidogeContract, aidogeContract1, aidogeContract2, signer;
 
@@ -72,7 +72,6 @@ const getInfo = async () => {
     } else {
         isApprove.value = false
     }
-    
 }
 
 
@@ -209,7 +208,7 @@ const connect = async () => {
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{
-                chainId: `0x${Number(11155111).toString(16)}`, //切换到指定链
+                chainId: `0x${Number(42161).toString(16)}`, //切换到指定链
             }
             ]
         })
@@ -226,7 +225,7 @@ const Setprovider = async () => {
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{
-                chainId: `0x${Number(11155111).toString(16)}`, //切换到指定链
+                chainId: `0x${Number(42161).toString(16)}`, //切换到指定链
             }
             ]
         })
@@ -317,8 +316,8 @@ const handleCountdownEnded = () => {
             </h2>
             <h2>
                 <p>Betdoge</p>
-                <p>totalSupply:10000000000000000</p>
-                <p>address:0x0000000000000000000000000000000000000000</p>
+                <p>totalSupply:100,000,000,00</p>
+                <p>address:0xC6b3446b551065089Aa4E5897b9D9Be9089a6241</p>
             </h2>
             <h1>Rules</h1>
             <h2>

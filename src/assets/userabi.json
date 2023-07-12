@@ -32,19 +32,6 @@
 			{
 				"indexed": false,
 				"internalType": "bool",
-				"name": "_close",
-				"type": "bool"
-			}
-		],
-		"name": "Closestatus",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "bool",
 				"name": "_open",
 				"type": "bool"
 			}
@@ -83,6 +70,19 @@
 		],
 		"name": "extractToken",
 		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "BetdogeMining",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -264,19 +264,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint8",
-				"name": "_number",
-				"type": "uint8"
-			}
-		],
-		"name": "ceshiSetUsers",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
