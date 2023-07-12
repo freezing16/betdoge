@@ -52,7 +52,7 @@ const getInfo = async () => {
     infomation.value.mybetdoge = utils.formatNumber(_mybetdoge)
     // 获取结束时间
     let Time = await userContract1.timeEnd()
-    endTime = Number(Time) * 1000
+    endTime = Number(Time)
     // 上期数字
     let _prevNum = await userContract1.getLotteryList(_currentIssue.toString() - 1)
     infomation.value.prevNum = _prevNum.toString();
@@ -72,6 +72,7 @@ const getInfo = async () => {
     } else {
         isApprove.value = false
     }
+    
 }
 
 
@@ -202,16 +203,36 @@ const ExtractBETDOGE = async () => {
 // connect钱包
 const connect = async () => {
     try {
-        let res = await window.ethereum.enable();
+        //没有打开metamask先打开
+        let res = await ethereum.request({ method: 'eth_requestAccounts' }) 
+        //如果链不对切换链
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{
+                chainId: `0x${Number(11155111).toString(16)}`, //切换到指定链
+            }
+            ]
+        })
         wallAddr.value = res[0].substring(0, 6) + '...' + res[0].substring(res[0].length - 4);
         Setprovider()
     } catch (error) {
-        console.log(error)
+        ElMessage.error(JSON.stringify(error))
     }
 }
 
 //设置provider
 const Setprovider = async () => {
+    try {
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{
+                chainId: `0x${Number(11155111).toString(16)}`, //切换到指定链
+            }
+            ]
+        })
+    } catch (error) {
+        ElMessage.error(JSON.stringify(error))
+    }
     provider = new ethers.BrowserProvider(window.ethereum);
     signer = await provider.getSigner();
     myaddress = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -222,8 +243,8 @@ const Setprovider = async () => {
     aidogeContract2 = new ethers.Contract(aidogeAddr, aidogeABI, signer)
     let eventListenerCount = await userContract1.listenerCount('Openstatus');
     console.log(eventListenerCount)
-    if(eventListenerCount){
-        userContract1.off("Openstatus",()=>{
+    if (eventListenerCount) {
+        userContract1.off("Openstatus", () => {
             console.log("event off")
         })
     }
@@ -232,13 +253,13 @@ const Setprovider = async () => {
         if (_state) {
             console.log('start')
             Openstatus.value = true
-        }else{
+        } else {
             console.log('close')
             Openstatus.value = false
             getInfo()
         }
     })
-    
+
     getInfo()
 }
 
@@ -253,7 +274,6 @@ onMounted(async () => {
         let res = await window.ethereum.request({ method: 'eth_requestAccounts' });
         wallAddr.value = res[0].substring(0, 6) + '...' + res[0].substring(res[0].length - 4);
         Setprovider()
-
     }
 })
 
@@ -261,8 +281,12 @@ onMounted(async () => {
 
 //倒计时结束
 const handleCountdownEnded = () => {
-    // console.log("end")
-    // waiting.value = "waiting"
+    // if(endTime){
+    //     waiting.value = "waiting"
+    // }else{
+    //     waiting.value=null
+    // }
+   
 };
 </script>
 
@@ -306,8 +330,8 @@ const handleCountdownEnded = () => {
             </h2>
             <div class="progress">
                 <div class="timeState">
-                    <!-- <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" /> -->
-                    <!-- <span class="waiting">{{ waiting }}</span> -->
+                    <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" />
+                   <!-- <span class="waiting">{{ waiting }}</span> -->
                 </div>
                 <el-progress :percentage="userlen" :format="format" stroke-width=12 />
             </div>

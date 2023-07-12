@@ -1,63 +1,61 @@
 <template>
-    <div class="countTime">
-        <span>{{ formattedTime }}</span>
-    </div>
-  </template>
-  <script>
-  import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
-   export default {
-    props: {
-      timestamp: {
-        type: Number,
-        required: true
-      }
-    },
-    setup(props, { emit }) {
-      let interval;
-      const currentTime = ref(0);
-      const formattedTime = computed(() => {
-        const date = new Date(currentTime.value * 1000); 
-        const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-        const seconds = date.getUTCSeconds().toString().padStart(2, '0');
-        currentTime.value = Math.floor((props.timestamp - Date.now()) / 1000);
-        if (currentTime.value <= 0){
-            return '00:00'
-        }
-        return  `${minutes}:${seconds}` ;
-      });
-       const startCountdown = () => {
-        interval = setInterval(() => {
-          currentTime.value = Math.floor((props.timestamp - Date.now()) / 1000);
-           if (currentTime.value <= 0) {
-            clearInterval(interval);
-            emit('countdown-ended');
-            
-          }
-        }, 1000);
-      };
-       watch(() => props.timestamp, () => {
-        startCountdown();
-      });
-       onMounted(() => {
-        startCountdown();
-      });
-       onUnmounted(() => {
-        clearInterval(interval);
-      });
-       return {
-        formattedTime
-      };
+  <div class="countTime">
+    <span>{{ formattedTime }}</span>
+  </div>
+</template>
+<script>
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { ethers } from 'ethers';
+ export default {
+  props: {
+    timestamp: {
+      type: Number,
+      required: true
     }
-  };
-  </script>
-
-  <style lang="less">
-  .countTime{
-   span{
-      font-size: 18px;
-      color: #fcd3d3;
-   }
-
+  },
+  setup(props, { emit }) {
+    let interval;
+    const currentTime = ref(0);
+    const formattedTime = computed(() => {
+      const minutes = Math.floor(currentTime.value / 60).toString().padStart(2, '0');
+      const seconds = (currentTime.value % 60).toString().padStart(2, '0');
+      if (currentTime.value <= 0) {
+        return '00:00';
+      }
+      return `${minutes}:${seconds}`;
+    });
+     const startCountdown = () => {
+      interval = setInterval(() => {
+        currentTime.value--;
+        if (currentTime.value <= 0) {
+          clearInterval(interval);
+          emit('countdown-ended');
+        }
+      }, 1000);
+    };
+     const getCurrentBlockTimestamp = async () => {
+      const pro = new ethers.BrowserProvider(window.ethereum);
+      const block = await pro.getBlock('latest');
+      const timestamp = block.timestamp;
+      return Number(timestamp);
+    };
+     const updateCountdown = async () => {
+      const currentTimestamp = await getCurrentBlockTimestamp();
+      currentTime.value = Math.floor(props.timestamp - currentTimestamp);
+      startCountdown();
+    };
+     watch(() => props.timestamp, () => {
+      updateCountdown();
+    });
+     onMounted(() => {
+      updateCountdown();
+    });
+     onUnmounted(() => {
+      clearInterval(interval);
+    });
+     return {
+      formattedTime
+    };
   }
-
-  </style>
+};
+</script>
