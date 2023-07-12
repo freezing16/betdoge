@@ -321,7 +321,7 @@ const handleCountdownEnded = () => {
             </h2>
             <h1>Rules</h1>
             <h2>
-                Open once every 30+ minutes when the number of participants reaches 100.
+                100,000,000,00 Aidoge one opportunity.Open once every 30+ minutes when the number of participants reaches 100.
                 If 30+ minutes have passed and the number of participants is below 100,
                 it will wait until there are 100 participants to start.
                 We will randomly select 9 numbers from 0 to 99. Each person can only purchase one ticket at a time, but
