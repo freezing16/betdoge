@@ -80,7 +80,7 @@ const approve = async () => {
     isApproveLoading.value = true
     try {
         let res = await aidogeContract2.approve(userAddr, 100000000000000000000000n)
-        aidogeContract2.once('Approval', async (_user, _spender, _value) => {
+        aidogeContract1.once('Approval', async (_user, _spender, _value) => {
             if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)
                 && utils.addressToUpperCase(_spender) == utils.addressToUpperCase(userAddr)) {
                 getInfo()
@@ -107,7 +107,7 @@ const Betting = async () => {
     isbettingLoading.value = true
     try {
         let res = await userContract2.Betting(bettingAmount)
-        userContract2.once('betsuccess', (_user) => {
+        userContract1.once('betsuccess', (_user) => {
             if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                 getInfo()
                 ElMessage({
@@ -134,7 +134,7 @@ const ExtractAIDOGE = async () => {
     if (amount > 0) {
         try {
             let res = await userContract2.extractAidoge(amount)
-            userContract2.once('extractToken', (_user) => {
+            userContract1.once('extractToken', (_user) => {
                 if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                     getInfo()
                     ElMessage({
@@ -170,7 +170,7 @@ const ExtractBETDOGE = async () => {
     if (amount > 0) {
         try {
             let res = await userContract2.extractBetdoge(amount)
-            userContract2.once('extractToken', (_user) => {
+            userContract1.once('extractToken', (_user) => {
                 if (utils.addressToUpperCase(_user) == utils.addressToUpperCase(myaddress)) {
                     getInfo()
                     ElMessage({
@@ -203,7 +203,7 @@ const ExtractBETDOGE = async () => {
 const connect = async () => {
     try {
         //没有打开metamask先打开
-        let res = await ethereum.request({ method: 'eth_requestAccounts' }) 
+        let res = await ethereum.request({ method: 'eth_requestAccounts' })
         //如果链不对切换链
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
@@ -285,7 +285,7 @@ const handleCountdownEnded = () => {
     // }else{
     //     waiting.value=null
     // }
-   
+
 };
 </script>
 
@@ -321,7 +321,8 @@ const handleCountdownEnded = () => {
             </h2>
             <h1>Rules</h1>
             <h2>
-                100,000,000,00 Aidoge one opportunity.Open once every 30+ minutes when the number of participants reaches 100.
+                10B Aidoge one opportunity.Open once every 30+ minutes when the number of participants reaches
+                100.
                 If 30+ minutes have passed and the number of participants is below 100,
                 it will wait until there are 100 participants to start.
                 We will randomly select 9 numbers from 0 to 99. Each person can only purchase one ticket at a time, but
@@ -330,7 +331,7 @@ const handleCountdownEnded = () => {
             <div class="progress">
                 <div class="timeState">
                     <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" />
-                   <!-- <span class="waiting">{{ waiting }}</span> -->
+                    <!-- <span class="waiting">{{ waiting }}</span> -->
                 </div>
                 <el-progress :percentage="userlen" :format="format" stroke-width=12 />
             </div>
