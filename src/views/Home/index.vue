@@ -1,5 +1,5 @@
 <script setup>
-// import countTime from '@/components/countTime.vue'
+import countTime from '@/components/countTime.vue'
 import { ethers } from 'ethers';
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { utils } from '@/utils/utils.js'
