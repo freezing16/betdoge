@@ -294,10 +294,13 @@ const Setprovider = async () => {
     getInfo()
 }
 
-//切换钱包
-window.ethereum.on('accountsChanged', async (accounrs) => {
+// 切换钱包
+if(window.ethereum){
+    window.ethereum.on('accountsChanged', async (accounrs) => {
     location.reload();
 })
+}
+
 
 //加载完成
 onMounted(async () => {
