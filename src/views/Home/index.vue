@@ -339,7 +339,7 @@ const handleCountdownEnded = () => {
     <div class="lottery_box" v-loading="Openstatus" element-loading-text="Lottery in progress..."
         element-loading-background="rgba(167, 81, 255,.4)">
         <div class="LuckNumbers">
-            <h1>Destroy AIDOGE</h1>
+            <h1>AIDOGE Lottery</h1>
             <h2>By participating in the AIDOGE lottery, 
                 9 numbers will be drawn, and the winners of each number will receive 10XAIDOGE.
                 The remaining 10% of AIDOGE will be distributed,
@@ -470,6 +470,7 @@ const handleCountdownEnded = () => {
 
 .lottery_box {
     margin: 20px;
+    margin-top:-60px;
     border: 2px solid rgb(156, 81, 255);
     border-radius: 15px;
     padding: 10px 35px;
