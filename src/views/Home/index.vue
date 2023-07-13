@@ -340,18 +340,13 @@ const handleCountdownEnded = () => {
         element-loading-background="rgba(167, 81, 255,.4)">
         <div class="LuckNumbers">
             <h1>Destroy AIDOGE</h1>
-            <h2>By participating in the AIDOGE lottery, participants will receive minted BETDOGE tokens.
+            <h2>By participating in the AIDOGE lottery, 
                 9 numbers will be drawn, and the winners of each number will receive 10XAIDOGE.
                 The remaining 10% of AIDOGE will be distributed,
                 with 7% being burned to 0x000000000000000000000000000000000000dEaD and 3% used for Chainlink expenses and
                 development
             </h2>
-            <h2>
-                <p>Betdoge</p>
-                <p>totalSupply:100,000,000,00</p>
-                <p>address:0xC6b3446b551065089Aa4E5897b9D9Be9089a6241</p>
-            </h2>
-            <h1>Rules</h1>
+
             <h2>
                 10B Aidoge one opportunity.Open once every 30+ minutes when the number of participants reaches
                 100.
@@ -360,6 +355,16 @@ const handleCountdownEnded = () => {
                 We will randomly select 9 numbers from 0 to 99. Each person can only purchase one ticket at a time, but
                 multiple purchases are allowed.
             </h2>
+           
+            <!-- <h1>Rules</h1>
+            <h2>
+                10B Aidoge one opportunity.Open once every 30+ minutes when the number of participants reaches
+                100.
+                If 30+ minutes have passed and the number of participants is below 100,
+                it will wait until there are 100 participants to start.
+                We will randomly select 9 numbers from 0 to 99. Each person can only purchase one ticket at a time, but
+                multiple purchases are allowed.
+            </h2> -->
             <div class="progress">
                 <div class="timeState">
                     <countTime :timestamp="endTime" @countdown-ended="handleCountdownEnded" />
